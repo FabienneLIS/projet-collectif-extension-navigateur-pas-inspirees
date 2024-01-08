@@ -1,0 +1,20 @@
+{
+    "manifest_version": 3,
+    "name": "Pomodoro extension",
+    "description": "Pomodoro extension",
+    "version": "1.0",
+    "icons": {
+  
+      
+    },
+   
+    "action": {
+      
+            "default_popup": "popUp.html"
+     
+         
+      },
+
+    "permissions": ["scripting", "activeTab"]
+  
+  }
