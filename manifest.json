@@ -4,17 +4,12 @@
     "description": "Pomodoro extension",
     "version": "1.0",
     "icons": {
-  
-      
+      "48": "img/icon-pomodoro.png"
     },
-   
+
     "action": {
-      
-            "default_popup": "popUp.html"
-     
-         
-      },
+        "default_popup": "popUp.html"
+    },
 
     "permissions": ["scripting", "activeTab"]
-  
-  }
+}
