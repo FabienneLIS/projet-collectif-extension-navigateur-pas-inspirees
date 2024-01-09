@@ -2,14 +2,16 @@
     "manifest_version": 3,
     "name": "Pomodoro extension",
     "description": "Pomodoro extension",
-    "version": "1.0",
+    "version": "3.0",
     "icons": {
-      "48": "img/icon-pomodoro.png"
+        "48": "img/icon-pomodoro.png"
     },
-
+    "background": {
+        "service_worker": "background.js"
+    },
     "action": {
         "default_popup": "popUp.html"
     },
 
-    "permissions": ["scripting", "activeTab"]
+    "permissions": ["scripting", "activeTab", "storage"]
 }
