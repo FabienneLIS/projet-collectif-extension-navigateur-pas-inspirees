@@ -46,28 +46,21 @@ interval = setInterval(function () {
                         if (res.sessions % res.longBreakInterval === 0) {
                             chrome.storage.local.set({
                                 mode: "longBreak",
-                                remainingTime: settings["longBreak"]*60
+                                remainingTime: settings["longBreak"] * 60,
                             });
                         } else {
                             chrome.storage.local.set({
                                 mode: "shortBreak",
-                                remainingTime: settings["shortBreak"]*60
+                                remainingTime: settings["shortBreak"] * 60,
                             });
                         }
                         break;
                     default:
                         chrome.storage.local.set({
                             mode: "pomodoro",
-                            remainingTime: settings["pomodoro"]*60
+                            remainingTime: settings["pomodoro"] * 60,
                         });
                 }
-            }
-            
-        }
-        if (res.remainingTime <= 0) {
-            if (Notification.permission === "granted") {
-                const text = res.mode === "pomodoro" ? "Get back to work!" : "Take a break!";
-                new Notification(text);
             }
         }
     });
@@ -75,9 +68,33 @@ interval = setInterval(function () {
 
 
 
-const waterButtonPress= document.getElementById("js-water");
-waterButtonPress.addEventListener("click", () => {
-  chrome.storage.local.set({
-   water: water + 0.5
-  })
-})
+// alarms
+
+chrome.alarms.onAlarm.addListener(() => {//  créer l'alarme sur le pc
+    chrome.notifications.create(
+        {
+            type: "basic",
+            iconUrl: "img/lhorloge.png",
+            title: "Time's up !",
+            message: "Your time is over, skipping to the next mode",
+            silent: false,
+        },
+        () => {}
+    );
+});
+
+// récupère le message que le main lui a envoyé et active la création du message
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) { 
+    if (request.time) {
+        createAlarm();
+    }
+});
+
+// créé l'alarme toutes les tant de minutes
+function createAlarm() {
+    chrome.storage.local.get(["mode"], (res) => {
+        chrome.alarms.create("timesup", {
+            periodInMinutes: settings[res.mode],
+        });
+    });
+}
