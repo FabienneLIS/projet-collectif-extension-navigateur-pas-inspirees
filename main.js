@@ -1,5 +1,5 @@
 const settings = {
-    pomodoro: 1,
+    pomodoro: 25,
     shortBreak: 5,
     longBreak: 15,
     longBreakInterval: 4,
@@ -12,7 +12,7 @@ let updateInterval = setInterval(function () {
         if (res.isRunning) {
             updateClock();
         }
-        updateModeVisual(res.mode)
+        updateModeVisual(res.mode);
     });
 }, 1000);
 
@@ -22,18 +22,8 @@ mainButton.addEventListener("click", () => {
     const { action } = mainButton.dataset;
     if (action === "start") {
         startTimer();
-        chrome.storage.local.get(["mode"], (res) => {
-            if (res.mode === "pomodoro") {
-                chrome.action.setIcon({ path: "img/icon-pomodoro-working.png" });
-            } else if (res.mode === "shortBreak") {
-                chrome.action.setIcon({ path: "img/icon-pomodoro-short-break.png" });
-            } else if (res.mode === "longBreak") {
-                chrome.action.setIcon({ path: "img/icon-pomodoro-long-break.png" });
-            }
-        });
     } else {
         stopTimer();
-        chrome.action.setIcon({ path: "img/icon-pomodoro.png" });
     }
 });
 
@@ -92,6 +82,26 @@ function updateModeVisual(mode) {
     document.querySelector(`[data-mode="${mode}"]`).classList.add("active");
     document.body.style.backgroundColor = `var(--${mode})`;
     document.getElementById("js-progress").setAttribute("max", settings[mode] * 60); // gère l'ésthétique modes
+    chrome.storage.local.get(["isRunning"], (res) => {
+        if (res.isRunning) {
+            switch (mode) {
+                case "pomodoro":
+                    chrome.action.setIcon({ path: "img/icon-pomodoro-working.png" });
+                    break;
+                case "longBreak":
+                    chrome.action.setIcon({ path: "img/icon-pomodoro-long-break.png" });
+                    break;
+                case "shortBreak":
+                    chrome.action.setIcon({ path: "img/icon-pomodoro-short-break.png" });
+                    break;
+                default:
+                    chrome.action.setIcon({ path: "img/icon-pomodoro.png" });
+                    break;
+            }
+        } else {
+            chrome.action.setIcon({ path: "img/icon-pomodoro.png" });
+        }
+    });
 }
 
 // gère le changement de mode
@@ -100,7 +110,7 @@ function switchMode(mode) {
         mode, // change le mode
         remainingTime: settings[mode] * 60, // change le remainingTime au temps du mode en secondes
     });
-    updateModeVisual(mode)
+    updateModeVisual(mode);
 
     updateClock();
 }
@@ -132,7 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function initDom() {
     chrome.storage.local.get(["isRunning", "mode"], (res) => {
-        updateModeVisual(res.mode)
+        updateModeVisual(res.mode);
         if (res.isRunning) {
             startTimer();
         } else {
