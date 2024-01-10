@@ -1,9 +1,10 @@
 const settings = {
-    pomodoro: 25,
-    shortBreak: 5,
+    pomodoro: 1,
+    shortBreak: 1,
     longBreak: 15,
     longBreakInterval: 4,
     sessions: 0,
+    water: 0,
 };
 
 // vérifie si les valeurs sont présentes et initie celles qui ne le sont pas
@@ -71,3 +72,12 @@ interval = setInterval(function () {
         }
     });
 }, 1000);
+
+
+
+const waterButtonPress= document.getElementById("js-water");
+waterButtonPress.addEventListener("click", () => {
+  chrome.storage.local.set({
+   water: water + 0.5
+  })
+})
