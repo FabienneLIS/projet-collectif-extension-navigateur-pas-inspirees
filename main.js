@@ -1,6 +1,6 @@
 const settings = {
-    pomodoro: 25,
-    shortBreak: 5,
+    pomodoro: 1,
+    shortBreak: 1,
     longBreak: 15,
     longBreakInterval: 4,
     sessions: 0,
@@ -14,7 +14,7 @@ let updateInterval = setInterval(function () {
         }
         updateModeVisual(res.mode);
     });
-}, 1000);
+}, 100);
 
 // gère le start et stop + changement icônes en fonction du mode
 const mainButton = document.getElementById("js-btn");
@@ -22,6 +22,11 @@ mainButton.addEventListener("click", () => {
     const { action } = mainButton.dataset;
     if (action === "start") {
         startTimer();
+        chrome.storage.local.get(["mode"], (res) => { // envoie le message au bg
+            chrome.runtime.sendMessage({time : settings[res.mode]}, function (response){
+                console.log(response)
+            })
+        })
     } else {
         stopTimer();
     }
@@ -125,17 +130,8 @@ function handleMode(event) {
     stopTimer();
 }
 
-// gère les autorisations
+// quand le DOM est chargé, lance 2 fonctions
 document.addEventListener("DOMContentLoaded", () => {
-    if ("Notification" in window) {
-        if (Notification.permission !== "granted" && Notification.permission !== "denied") {
-            Notification.requestPermission().then(function (permission) {
-                if (permission === "granted") {
-                    new Notification("Awesome! You will be notified at the start of each session");
-                }
-            });
-        }
-    }
     updateClock();
     initDom();
 });
@@ -150,3 +146,4 @@ function initDom() {
         }
     });
 }
+
