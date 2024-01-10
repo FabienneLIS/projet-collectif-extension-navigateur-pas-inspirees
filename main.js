@@ -1,4 +1,4 @@
-const timer = {
+const settings = {
     pomodoro: 25,
     shortBreak: 5,
     longBreak: 15,
@@ -6,7 +6,15 @@ const timer = {
     sessions: 0,
 };
 
-let interval;
+// fait commencer une intervalle pour update la pop up
+let updateInterval = setInterval(function () {
+    chrome.storage.local.get(["isRunning", "mode"], (res) => {
+        if (res.isRunning) {
+            updateClock();
+        }
+        updateModeVisual(res.mode);
+    });
+}, 1000);
 
 // gère le start et stop + changement icônes en fonction du mode
 const mainButton = document.getElementById("js-btn");
@@ -14,125 +22,100 @@ mainButton.addEventListener("click", () => {
     const { action } = mainButton.dataset;
     if (action === "start") {
         startTimer();
-        if (timer.mode === "pomodoro"){
-            chrome.action.setIcon({ path: "img/icon-pomodoro-working.png" });
-        }
-        else if (timer.mode === "shortBreak"){
-            chrome.action.setIcon({ path: "img/icon-pomodoro-short-break.png" });
-        }
-        else if (timer.mode === "longBreak"){
-            chrome.action.setIcon({ path: "img/icon-pomodoro-long-break.png" });
-        }
     } else {
         stopTimer();
-        chrome.action.setIcon({ path: "img/icon-pomodoro.png" });
     }
 });
 
+// changer les modes en fonctions des boutons
 const modeButtons = document.querySelector("#js-mode-buttons");
 modeButtons.addEventListener("click", handleMode);
 
-// calcule le temps qui reste
-function getRemainingTime(endTime) {
-    const currentTime = Date.parse(new Date());
-    const difference = endTime - currentTime;
-
-    const total = Number.parseInt(difference / 1000, 10);
-    const minutes = Number.parseInt((total / 60) % 60, 10);
-    const seconds = Number.parseInt(total % 60, 10);
-
-    return {
-        total,
-        minutes,
-        seconds,
-    };
-}
-
-// gère le changement de mode
+/// démarre le chrono pour le stocker dans bg et incrémenter sessions et changer bouton start stop
 function startTimer() {
-    let { total } = timer.remainingTime;
-    const endTime = Date.parse(new Date()) + total * 1000;
-
-    if (timer.mode === "pomodoro") timer.sessions++;
-
-    mainButton.dataset.action = "stop";
-    mainButton.textContent = "stop";
-    mainButton.classList.add("active");
-
-    interval = setInterval(function () {
-        timer.remainingTime = getRemainingTime(endTime);
-        updateClock();
-
-        total = timer.remainingTime.total;
-        if (total <= 0) {
-            clearInterval(interval);
-
-            switch (timer.mode) {
-                case "pomodoro":
-                    if (timer.sessions % timer.longBreakInterval === 0) {
-                        switchMode("longBreak");
-                    } else {
-                        switchMode("shortBreak");
-                    }
-                    break;
-                default:
-                    switchMode("pomodoro");
-            }
-
-            if (Notification.permission === "granted") {
-                const text = timer.mode === "pomodoro" ? "Get back to work!" : "Take a break!";
-                new Notification(text);
-            }
-
-            startTimer();
+    chrome.storage.local.set({
+        isRunning: true, // indique au bg que le timer est en route
+    });
+    chrome.storage.local.get(["mode"], (res) => {
+        if (res.mode === "pomodoro") {
+            chrome.storage.local.set({
+                sessions: res.sessions + 1, // stocke l'incrémentation des sessions dans bg
+            });
         }
-    }, 1000);
+        mainButton.dataset.action = "stop";
+        mainButton.textContent = "stop";
+        mainButton.classList.add("active");
+    });
 }
 
-
-// arrête le chrono
+// arrête le chrono et gere le bouton start stop
 function stopTimer() {
-    clearInterval(interval);
+    chrome.storage.local.set({
+        isRunning: false, // indique au bg que le timer a stoppé
+    });
 
     mainButton.dataset.action = "start";
     mainButton.textContent = "start";
     mainButton.classList.remove("active");
 }
 
-// met à jour le temps
+// met à jour les chiffres dans la pop up
 function updateClock() {
-    const { remainingTime } = timer;
-    const minutes = `${remainingTime.minutes}`.padStart(2, "0");
-    const seconds = `${remainingTime.seconds}`.padStart(2, "0");
+    chrome.storage.local.get(["remainingTime", "mode"], (res) => {
+        const minutes = `${Number.parseInt((res.remainingTime / 60) % 60, 10)}`.padStart(2, "0"); // affichage a deux chiffres
+        const seconds = `${Number.parseInt(res.remainingTime % 60, 10)}`.padStart(2, "0");
+        const min = document.getElementById("js-minutes");
+        const sec = document.getElementById("js-seconds");
+        min.textContent = minutes;
+        sec.textContent = seconds;
 
-    const min = document.getElementById("js-minutes");
-    const sec = document.getElementById("js-seconds");
-    min.textContent = minutes;
-    sec.textContent = seconds;
+        const text = res.mode === "pomodoro" ? "Get back to work!" : "Take a break!";
+        document.title = `${minutes}:${seconds} — ${text}`; // change nom onglet
 
-    const text = timer.mode === "pomodoro" ? "Get back to work!" : "Take a break!";
-    document.title = `${minutes}:${seconds} — ${text}`;
-
-    const progress = document.getElementById("js-progress");
-    progress.value = timer[timer.mode] * 60 - timer.remainingTime.total;
+        const progress = document.getElementById("js-progress"); // gère barre de progression
+        progress.value = settings[res.mode] * 60 - res.remainingTime;
+    });
 }
 
-function switchMode(mode) {
-    timer.mode = mode;
-    timer.remainingTime = {
-        total: timer[mode] * 60,
-        minutes: timer[mode],
-        seconds: 0,
-    };
-
+function updateModeVisual(mode) {
     document.querySelectorAll("button[data-mode]").forEach((e) => e.classList.remove("active"));
     document.querySelector(`[data-mode="${mode}"]`).classList.add("active");
     document.body.style.backgroundColor = `var(--${mode})`;
-    document.getElementById("js-progress").setAttribute("max", timer.remainingTime.total);
+    document.getElementById("js-progress").setAttribute("max", settings[mode] * 60); // gère l'ésthétique modes
+    chrome.storage.local.get(["isRunning"], (res) => {
+        if (res.isRunning) {
+            switch (mode) {
+                case "pomodoro":
+                    chrome.action.setIcon({ path: "img/icon-pomodoro-working.png" });
+                    break;
+                case "longBreak":
+                    chrome.action.setIcon({ path: "img/icon-pomodoro-long-break.png" });
+                    break;
+                case "shortBreak":
+                    chrome.action.setIcon({ path: "img/icon-pomodoro-short-break.png" });
+                    break;
+                default:
+                    chrome.action.setIcon({ path: "img/icon-pomodoro.png" });
+                    break;
+            }
+        } else {
+            chrome.action.setIcon({ path: "img/icon-pomodoro.png" });
+        }
+    });
+}
+
+// gère le changement de mode
+function switchMode(mode) {
+    chrome.storage.local.set({
+        mode, // change le mode
+        remainingTime: settings[mode] * 60, // change le remainingTime au temps du mode en secondes
+    });
+    updateModeVisual(mode);
 
     updateClock();
 }
 
+// récupère la data du HTML en fonction clic bouton et change de mode
 function handleMode(event) {
     const { mode } = event.target.dataset;
 
@@ -141,7 +124,6 @@ function handleMode(event) {
     switchMode(mode);
     stopTimer();
 }
-
 
 // gère les autorisations
 document.addEventListener("DOMContentLoaded", () => {
@@ -154,6 +136,17 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
     }
-
-    switchMode("pomodoro");
+    updateClock();
+    initDom();
 });
+
+function initDom() {
+    chrome.storage.local.get(["isRunning", "mode"], (res) => {
+        updateModeVisual(res.mode);
+        if (res.isRunning) {
+            startTimer();
+        } else {
+            stopTimer();
+        }
+    });
+}
