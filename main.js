@@ -1,7 +1,7 @@
 const settings = {
     pomodoro: 1,
     shortBreak: 1,
-    longBreak: 15,
+    longBreak: 1,
     longBreakInterval: 4,
     sessions: 0,
 };
@@ -22,13 +22,10 @@ mainButton.addEventListener("click", () => {
     const { action } = mainButton.dataset;
     if (action === "start") {
         startTimer();
-        chrome.storage.local.get(["mode"], (res) => { // envoie le message au bg
-            chrome.runtime.sendMessage({time : settings[res.mode]}, function (response){
-                console.log(response)
-            })
-        })
+        chrome.runtime.sendMessage({ btn: "start" }, function (response) {});
     } else {
         stopTimer();
+        chrome.runtime.sendMessage({ btn: "stop" }, function (response) {});
     }
 });
 
@@ -146,4 +143,3 @@ function initDom() {
         }
     });
 }
-
