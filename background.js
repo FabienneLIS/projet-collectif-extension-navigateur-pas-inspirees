@@ -4,6 +4,7 @@ const settings = {
     longBreak: 1,
     longBreakInterval: 4,
     sessions: 0,
+    water: 0,
 };
 
 // vérifie si les valeurs sont présentes et initie celles qui ne le sont pas
