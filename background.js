@@ -1,10 +1,9 @@
 const settings = {
-    pomodoro: 1,
-    shortBreak: 1,
+    pomodoro: 0.2,
+    shortBreak: 0.2,
     longBreak: 1,
     longBreakInterval: 4,
     sessions: 0,
-    water: 0,
 };
 
 // vérifie si les valeurs sont présentes et initie celles qui ne le sont pas
@@ -53,12 +52,14 @@ interval = setInterval(function () {
                                 sessions: 0,
                             });
                             console.log("longbreak");
+                            createAlarm();
                         } else {
                             chrome.storage.local.set({
                                 mode: "shortBreak",
                                 remainingTime: settings["shortBreak"] * 60,
                             });
                             console.log("shortbreak");
+                            createAlarm();
                         }
                         break;
                     default:
@@ -68,6 +69,7 @@ interval = setInterval(function () {
                             sessions: res.sessions + 1,
                         });
                         console.log("pomodoro");
+                        createAlarm();
                         break;
                 }
             }
@@ -89,6 +91,7 @@ chrome.alarms.onAlarm.addListener(() => {
         },
         () => {}
     );
+    stopAlarm()
 });
 
 // récupère le message que le main lui a envoyé et active la création du message
@@ -113,6 +116,6 @@ function createAlarm() {
 }
 
 function stopAlarm() {
-    chrome.alarms.clear();
+    chrome.alarms.clear("timesup");
     console.log("stopAlarm activé");
 }

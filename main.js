@@ -1,10 +1,9 @@
 const settings = {
-    pomodoro: 1,
-    shortBreak: 1,
+    pomodoro: 0.2,
+    shortBreak: 0.2,
     longBreak: 1,
     longBreakInterval: 4,
     sessions: 0,
-    water: 0,
 };
 
 // fait commencer une intervalle pour update la pop up
