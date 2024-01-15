@@ -144,23 +144,26 @@ function initDom() {
 //water
 // Sélectionnez le bouton d'eau
 const button = document.querySelector(".glassofwater");
-
+const waterbottle = document.querySelector(".waterBottle")
+const listenMessenger = document.querySelector(".messageCache")
 // Initialisez le compteur de clics
-let click = 0;
-
+let click = 1;
+let i = 45
 // Ajoutez un écouteur d'événements au clic sur le bouton
-button.addEventListener("click", event => {
-    // Incrémentez le compteur de clics
-    click = 1;
-    const waterbottle = document.querySelector(".waterBottle")
-for (let i=5;i<40;i+5){
-    waterbottle.style.marginTop= `${i}px`
-    // Affichez le nombre de clics dans la console
-    console.log("Nombre de clics :", click++);
+button.addEventListener("click", event => 
+{
+    if(click >= 8 ) 
+    {
+        listenMessenger.textContent = "Eau là là ! Vous avez vidé deux litres. Hydro-héros en action !"
+        click = 1
+        i = 50
+   }
+    else {
+        click+=1
+        let j=5
+        waterbottle.style.marginTop = `${i-=j}px `
+        listenMessenger.textContent = ""
     }
+
+    console.log(click)
 })
-
-
-// const waterbottle = document.querySelector(".waterBottle")
-
-()

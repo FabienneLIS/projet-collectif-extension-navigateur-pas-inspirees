@@ -147,6 +147,7 @@
 .messageDrinkWater {
   color: #fff;
   font-size: 10px;
+  flex-wrap: wrap;
 }
 
 .glassofwater {
