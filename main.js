@@ -1,7 +1,7 @@
 const settings = {
     pomodoro: 0.2,
     shortBreak: 0.2,
-    longBreak: 1,
+    longBreak: 0.3,
     longBreakInterval: 4,
     sessions: 0,
 };
@@ -70,9 +70,6 @@ function updateClock() {
         const sec = document.getElementById("js-seconds");
         min.textContent = minutes;
         sec.textContent = seconds;
-
-        const text = res.mode === "pomodoro" ? "Get back to work!" : "Take a break!";
-        document.title = `${minutes}:${seconds} — ${text}`; // change nom onglet
 
         const progress = document.getElementById("js-progress"); // gère barre de progression
         progress.value = settings[res.mode] * 60 - res.remainingTime;

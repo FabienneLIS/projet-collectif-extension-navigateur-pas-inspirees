@@ -1,7 +1,7 @@
 const settings = {
     pomodoro: 0.2,
     shortBreak: 0.2,
-    longBreak: 1,
+    longBreak: 0.2,
     longBreakInterval: 4,
     sessions: 0,
 };
@@ -86,7 +86,7 @@ chrome.alarms.onAlarm.addListener(() => {
             type: "basic",
             iconUrl: "img/lhorloge.png",
             title: "Time's up !",
-            message: "Your time is over, skipping to the next mode",
+            message: "Your time is over, skipping to the next mode \nAnd don't forget to drink !",
             silent: false,
         },
         () => {}
