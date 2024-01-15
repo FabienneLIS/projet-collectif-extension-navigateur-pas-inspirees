@@ -140,3 +140,21 @@ function initDom() {
         }
     });
 }
+
+//water
+// Sélectionnez le bouton d'eau
+const button = document.querySelector(".glassofwater");
+
+// Initialisez le compteur de clics
+let click = 0;
+
+// Ajoutez un écouteur d'événements au clic sur le bouton
+button.addEventListener("click", event => {
+    // Incrémentez le compteur de clics
+    click += 1;
+
+    // Affichez le nombre de clics dans la console
+    console.log("Nombre de clics :", click);
+    return click
+});
+
