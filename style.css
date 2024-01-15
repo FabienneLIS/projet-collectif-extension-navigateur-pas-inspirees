@@ -9,61 +9,62 @@
  *
  */
 
- html {
-    box-sizing:border-box;
+html {
+    box-sizing: border-box;
     /* border: 2px solid br;
     border-radius: 999px; */
-  }
-  
-  *, *::before, *::after {
+}
+
+*,
+*::before,
+*::after {
     box-sizing: inherit;
     margin: 0;
     padding: 0;
-  }
-  
-  :root {
+}
+
+:root {
     --pomodoro: hsl(223, 25%, 40%);
     --shortBreak: hsl(48, 23%, 40%);
     --longBreak: hsl(105, 16%, 40%);
     --bgc: var(--pomodoro);
-  }
-  
-  body {
+}
+
+body {
     width: 500px;
     height: 500px;
     background-color: var(--bgc);
     transition: background-color 1s ease;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     user-select: none;
+}
 
-  }
-  
-  progress {
+progress {
     border-radius: 2px;
     width: 100%;
     height: 12px;
     position: fixed;
     top: 0;
-  }
-  
-  progress::-webkit-progress-bar {
-   background-color: rgba(0, 0, 0, 0.1);;
-  }
-  
-  progress::-webkit-progress-value {
+}
+
+progress::-webkit-progress-bar {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+progress::-webkit-progress-value {
     background-color: #fff;
-  }
-  
-  .timer {
+}
+
+.timer {
     position: absolute;
     top: 60%;
     left: 50%;
     transform: translate(-50%, -50%);
     padding: 20px;
     text-align: center;
-  }
-  
-  .clock {
+}
+
+.clock {
     margin-top: 50px;
     margin-bottom: 30px;
     font-size: 15rem;
@@ -71,9 +72,9 @@
     display: flex;
     align-items: center;
     font-family: arial, sans-serif;
-  }
-  
-  .mode-button {
+}
+
+.mode-button {
     font-size: 16px;
     height: 28px;
     cursor: pointer;
@@ -85,13 +86,13 @@
     border-radius: 4px;
     padding: 2px 12px;
     background: none;
-  }
-  
-  .mode-button.active {
+}
+
+.mode-button.active {
     border-color: #fff;
-  }
-  
-  .main-button {
+}
+
+.main-button {
     cursor: pointer;
     box-shadow: rgb(235, 235, 235) 0px 6px 0px;
     font-size: 22px;
@@ -107,76 +108,80 @@
     padding: 0px 12px;
     border-radius: 4px;
     transition: color 0.5s ease-in-out 0s;
-  }
-  
-  button:focus, button:active {
+}
+
+button:focus,
+button:active {
     outline: none;
-  }
-  
-  .main-button.active {
+}
+
+.main-button.active {
     transform: translateY(6px);
     box-shadow: none;
     outline: none;
-  }
-  
-  .hidden {
+}
+
+.hidden {
     display: none;
-  }
-  
-  @media screen and (max-width: 550px) {
+}
+
+@media screen and (max-width: 550px) {
     .clock {
-      font-size: 8rem;
+        font-size: 8rem;
     }
-  }
-  
+}
+
 /*eau*/
 
 .water {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  flex-wrap: nowrap;
-  margin: 20px 0px 10px 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: nowrap;
+    margin: 20px 0px 10px 0px;
 }
 
 .buttonWater {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 .messageDrinkWater {
-  color: #fff;
-  font-size: 10px;
-  flex-wrap: wrap;
+    color: #fff;
+    font-size: 10px;
+    flex-wrap: wrap;
 }
 
 .glassofwater {
-  width: 42px;
-  height: 42px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  cursor: pointer;
-  transform: scale(1);
+    width: 42px;
+    height: 42px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    transform: scale(1);
 }
 .glassofwater:hover {
-  animation: 1s linear forwards;
-  transform: scale(1.1);
-  color: red;
+    animation: 1s linear forwards;
+    transform: scale(1.1);
+    color: red;
 }
 
 .glassofwater:active {
-  transform: scale(1.5);
-  color: blue;
+    transform: scale(1.5);
+    color: blue;
 }
 
-#watertbn img{
-  height: 30px;
-  width: 30px;}#watertbn {
-  margin: 20px;
-  border: none;
-  background: none;
-  cursor: pointer;
+#watertbn img {
+    height: 30px;
+    width: 30px;
 }
+#watertbn {
+    margin: 20px;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
 .glassctr{
   width: 100px;
   height: auto;
@@ -190,7 +195,7 @@
   margin-left: 365px;
   width: 40px;
   height: 50px;
-  background-color: grey;
+  background-color: aqua;
   position: absolute;
   -webkit-clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%);
   clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%);
@@ -202,4 +207,36 @@
   height: 50px;
   background-color: aqua;
   position: relative;
+
+  &:before,
+  &:after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    min-width: 100vw;
+    min-height: 100vw;
+    background-color: grey;
+    animation-name: rotate;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+  }
+  
+  &:before {
+    bottom: 10vh;
+    border-radius: 45%;
+    animation-duration: 10s;
+  }
+  
+  &:after {
+    bottom: 5vh;
+    opacity: 0;
+    border-radius: 47%;
+    animation-duration: 10s;
+  }
+}
+
+@keyframes rotate {
+  0% {transform: translate(-50%, 0) rotateZ(0deg);}
+  50% {transform: translate(-50%, -2%) rotateZ(180deg);}
+  100% {transform: translate(-50%, 0%) rotateZ(360deg);}
 }
