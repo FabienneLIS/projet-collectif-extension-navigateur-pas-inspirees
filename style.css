@@ -167,3 +167,38 @@
   transform: scale(1.5);
   color: blue;
 }
+
+#watertbn img{
+  height: 30px;
+  width: 30px;}#watertbn {
+  margin: 20px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+.glassctr{
+  width: 100px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: grey;}
+  .glass{
+  margin-top: 30px;
+  margin-left: 365px;
+  width: 40px;
+  height: 50px;
+  background-color: grey;
+  position: absolute;
+  -webkit-clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%);
+  clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%);
+}
+.waterBottle{
+  margin-top: 45px;
+  margin-bottom: 10px;
+  width: 40px;
+  height: 50px;
+  background-color: aqua;
+  position: relative;
+}

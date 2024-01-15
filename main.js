@@ -151,10 +151,16 @@ let click = 0;
 // Ajoutez un écouteur d'événements au clic sur le bouton
 button.addEventListener("click", event => {
     // Incrémentez le compteur de clics
-    click += 1;
-
+    click = 1;
+    const waterbottle = document.querySelector(".waterBottle")
+for (let i=5;i<40;i+5){
+    waterbottle.style.marginTop= `${i}px`
     // Affichez le nombre de clics dans la console
-    console.log("Nombre de clics :", click);
-    return click
-});
+    console.log("Nombre de clics :", click++);
+    }
+})
 
+
+// const waterbottle = document.querySelector(".waterBottle")
+
+()
