@@ -12,10 +12,10 @@ chrome.storage.local.get(["isRunning", "longBreakInterval", "sessions", "mode", 
         isRunning: "isRunning" in res ? res.isRunning : false,
         longBreakInterval: "longBreakInterval" in res ? res.longBreakInterval : 4,
         mode: "mode" in res ? res.mode : "pomodoro",
-        remainingTime: "remainingTime" in res ? res.remainingTime : 25 * 60,
+        remainingTime: "remainingTime" in res ? res.remainingTime : settings['pomodoro'] * 60,
         sessions: "sessions" in res ? res.sessions : 1,
-        click: 1,
-        totalwater: 50,
+        click: "click" in res ? res.click :1,
+        totalWater: "totalWater" in res ? res.totalWater : 50,
     });
 });
 
@@ -122,7 +122,6 @@ function stopAlarm() {
 }
 
 function updateWater() {
-    console.log("bg");
     chrome.storage.local.get(["click", "totalWater"], (res) => {
         console.log(res.totalWater);
         switch (true) {
@@ -136,7 +135,7 @@ function updateWater() {
             case res.click === 8:
                 chrome.storage.local.set({
                     click: res.click + 1,
-                    totalWater: 45,
+                    totalWater: 50,
                 });
 
                 break;

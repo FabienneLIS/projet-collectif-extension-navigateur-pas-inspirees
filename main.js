@@ -8,6 +8,7 @@ const settings = {
 
 // fait commencer une intervalle pour update la pop up
 let updateInterval = setInterval(function () {
+    water();
     chrome.storage.local.get(["isRunning", "mode"], (res) => {
         if (res.isRunning) {
             updateClock();
@@ -16,7 +17,7 @@ let updateInterval = setInterval(function () {
     });
 }, 100);
 
-// gère le start et stop + changement icônes en fonction du mode
+// gère le start et stop + envoi messages au background
 const mainButton = document.getElementById("js-btn");
 mainButton.addEventListener("click", () => {
     const { action } = mainButton.dataset;
@@ -143,29 +144,34 @@ function initDom() {
 
 //water
 
-const button = document.querySelector(".glassofwater");
-const waterbottle = document.querySelector(".waterBottle");
-const listenMessenger = document.querySelector(".messageCache");
-button.addEventListener("click", (event) => {
-    chrome.runtime.sendMessage({ btn: "waterstart" }, function (response) {});
+function water() {
+    const button = document.querySelector(".glassofwater");
+    const waterbottle = document.querySelector(".waterBottle");
+    const listenMessenger = document.querySelector(".messageCache");
+
     chrome.storage.local.get(["click", "totalWater"], (res) => {
-        switch (true) {
-            case res.click >= 0 && res.click <= 7:
-                listenMessenger.textContent = "";
-                waterbottle.style.marginTop = `${res.totalWater}px `;
-                console.log(res.totalWater)
-                break;
-            case res.click === 8:
-                listenMessenger.textContent = "Eau là là ! Vous avez vidé deux litres. Hydro-héros en action !";
-                waterbottle.style.marginTop = `${res.totalWater}px `;
-                console.log(res.totalWater)
-                break;
-            case res.click > 8:
-                waterbottle.style.marginTop = `${res.totalWater}px `;
-                console.log(res.totalWater)
-                break;
-            default:
-                break;
-        }
+        waterbottle.style.marginTop = `${res.totalWater}px `;
+        button.addEventListener("click", (event) => {
+            chrome.runtime.sendMessage({ btn: "waterstart" }, function (response) {});
+
+            switch (true) {
+                case res.click >= 0 && res.click <= 7:
+                    listenMessenger.textContent = "";
+                    waterbottle.style.marginTop = `${res.totalWater}px `;
+
+                    break;
+                case res.click === 8:
+                    listenMessenger.textContent = "Eau là là ! Vous avez vidé deux litres. Hydro-héros en action !";
+                    waterbottle.style.marginTop = `${res.totalWater}px `;
+
+                    break;
+                case res.click > 8:
+                    waterbottle.style.marginTop = `${res.totalWater}px `;
+                    listenMessenger.textContent = "";
+                    break;
+                default:
+                    break;
+            }
+        });
     });
-});
+}
