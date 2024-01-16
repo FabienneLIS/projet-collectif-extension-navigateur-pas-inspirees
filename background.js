@@ -7,13 +7,15 @@ const settings = {
 };
 
 // vérifie si les valeurs sont présentes et initie celles qui ne le sont pas
-chrome.storage.local.get(["isRunning", "longBreakInterval", "sessions", "mode", "remainingTime"], (res) => {
+chrome.storage.local.get(["isRunning", "longBreakInterval", "sessions", "mode", "remainingTime", "click", "totalwater"], (res) => {
     chrome.storage.local.set({
         isRunning: "isRunning" in res ? res.isRunning : false,
         longBreakInterval: "longBreakInterval" in res ? res.longBreakInterval : 4,
         mode: "mode" in res ? res.mode : "pomodoro",
         remainingTime: "remainingTime" in res ? res.remainingTime : 25 * 60,
         sessions: "sessions" in res ? res.sessions : 1,
+        click: 1,
+        totalwater: 50,
     });
 });
 
@@ -33,15 +35,14 @@ function getRemainingTime(endTime) {
     };
 }
 
-// penadnt l'intervale d'une seconde, si le chrono est lancé, diminuer de 1 seconde et gère le changement de mode quand 0 atteint
+// pendant l'intervale d'une seconde, si le chrono est lancé, diminuer de 1 seconde et gère le changement de mode quand 0 atteint
 interval = setInterval(function () {
     chrome.storage.local.get(["isRunning", "longBreakInterval", "sessions", "mode", "remainingTime"], (res) => {
         if (res.isRunning) {
             chrome.storage.local.set({
                 remainingTime: res.remainingTime - 1,
             });
-            console.log('normal')
-            console.log(res.remainingTime)
+            console.log("normal");
             if (res.remainingTime <= 0) {
                 switch (res.mode) {
                     case "pomodoro":
@@ -91,15 +92,19 @@ chrome.alarms.onAlarm.addListener(() => {
         },
         () => {}
     );
-    stopAlarm()
+    stopAlarm();
 });
 
 // récupère le message que le main lui a envoyé et active la création du message
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.btn === "start") {
         createAlarm();
-    } else {
+    }
+    if (request.btn === "stop") {
         stopAlarm();
+    }
+    if (request.btn === "waterstart") {
+        updateWater();
     }
 });
 
@@ -109,13 +114,41 @@ function createAlarm() {
         chrome.alarms.create("timesup", {
             periodInMinutes: res.remainingTime / 60,
         });
-        console.log("alarme")
-        console.log(res.remainingTime);
     });
-    console.log("createAlarm activé");
 }
 
 function stopAlarm() {
     chrome.alarms.clear("timesup");
-    console.log("stopAlarm activé");
+}
+
+function updateWater() {
+    console.log("bg");
+    chrome.storage.local.get(["click", "totalWater"], (res) => {
+        console.log(res.totalWater);
+        switch (true) {
+            case res.click >= 0 && res.click <= 7:
+                chrome.storage.local.set({
+                    click: res.click + 1,
+                    totalWater: res.totalWater - 5,
+                });
+
+                break;
+            case res.click === 8:
+                chrome.storage.local.set({
+                    click: res.click + 1,
+                    totalWater: 45,
+                });
+
+                break;
+            case res.click > 8:
+                chrome.storage.local.set({
+                    click: 0,
+                    totalWater: 45,
+                });
+
+                break;
+            default:
+                break;
+        }
+    });
 }

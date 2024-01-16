@@ -65,7 +65,7 @@ progress::-webkit-progress-value {
 }
 
 .clock {
-    margin-top: 50px;
+    margin-top: 0px;
     margin-bottom: 30px;
     font-size: 15rem;
     line-height: 1;
@@ -197,61 +197,69 @@ width: 80px;
     cursor: pointer;
 }
 
-.glassctr{
-  width: 100px;
-  height: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: grey;}
-  .glass{
-  margin-top: 30px;
-  margin-left: 430px;
-  width: 40px;
-  height: 50px;
-  background-color: aqua;
-  position: absolute;
-  -webkit-clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%);
-  clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%);
-}
-.waterBottle{
-  margin-top: 45px;
-  margin-bottom: 10px;
-  width: 40px;
-  height: 50px;
-  background-color: aqua;
-  position: relative;
-
-  &:before,
-  &:after {
-    content: "";
-    position: absolute;
-    left: 50%;
-    min-width: 100vw;
-    min-height: 100vw;
+.glassctr {
+    width: 100px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     background-color: grey;
-    animation-name: rotate;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
-  }
-  
-  &:before {
-    bottom: 10vh;
-    border-radius: 45%;
-    animation-duration: 10s;
-  }
-  
-  &:after {
-    bottom: 5vh;
-    opacity: 0;
-    border-radius: 47%;
-    animation-duration: 10s;
-  }
+}
+.glass {
+    margin-top: 30px;
+    margin-left: 430px;
+    width: 40px;
+    height: 50px;
+    background-color: aqua;
+    position: absolute;
+    -webkit-clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%);
+    clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%);
+}
+
+.waterBottle {
+    margin-top: 50px;
+    margin-bottom: 10px;
+    width: 40px;
+    height: 50px;
+    background-color: aqua;
+    position: relative;
+
+    &:before,
+    &:after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        min-width: 25vw;
+        min-height: 25vh;
+        background-color: grey;
+        animation-name: rotate;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+    }
+
+    &:before {
+        bottom: 10vh;
+        border-radius: 45%;
+        animation-duration: 10s;
+    }
+
+    &:after {
+        bottom: 5vh;
+        opacity: 0;
+        border-radius: 47%;
+        animation-duration: 10s;
+    }
 }
 
 @keyframes rotate {
-  0% {transform: translate(-50%, 0) rotateZ(0deg);}
-  50% {transform: translate(-50%, -2%) rotateZ(180deg);}
-  100% {transform: translate(-50%, 0%) rotateZ(360deg);}
+    0% {
+        transform: translate(-50%, 0) rotateZ(0deg);
+    }
+    50% {
+        transform: translate(-50%, -2%) rotateZ(180deg);
+    }
+    100% {
+        transform: translate(-50%, 0%) rotateZ(360deg);
+    }
 }
