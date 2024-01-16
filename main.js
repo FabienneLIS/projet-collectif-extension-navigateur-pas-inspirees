@@ -142,28 +142,30 @@ function initDom() {
 }
 
 //water
-// Sélectionnez le bouton d'eau
-const button = document.querySelector(".glassofwater");
-const waterbottle = document.querySelector(".waterBottle")
-const listenMessenger = document.querySelector(".messageCache")
-// Initialisez le compteur de clics
-let click = 1;
-let i = 45
-// Ajoutez un écouteur d'événements au clic sur le bouton
-button.addEventListener("click", event => 
-{
-    if(click >= 8 ) 
-    {
-        listenMessenger.textContent = "Eau là là ! Vous avez vidé deux litres. Hydro-héros en action !"
-        click = 1
-        i = 50
-   }
-    else {
-        click+=1
-        let j=5
-        waterbottle.style.marginTop = `${i-=j}px `
-        listenMessenger.textContent = ""
-    }
 
-    console.log(click)
-})
+const button = document.querySelector(".glassofwater");
+const waterbottle = document.querySelector(".waterBottle");
+const listenMessenger = document.querySelector(".messageCache");
+button.addEventListener("click", (event) => {
+    chrome.runtime.sendMessage({ btn: "waterstart" }, function (response) {});
+    chrome.storage.local.get(["click", "totalWater"], (res) => {
+        switch (true) {
+            case res.click >= 0 && res.click <= 7:
+                listenMessenger.textContent = "";
+                waterbottle.style.marginTop = `${res.totalWater}px `;
+                console.log(res.totalWater)
+                break;
+            case res.click === 8:
+                listenMessenger.textContent = "Eau là là ! Vous avez vidé deux litres. Hydro-héros en action !";
+                waterbottle.style.marginTop = `${res.totalWater}px `;
+                console.log(res.totalWater)
+                break;
+            case res.click > 8:
+                waterbottle.style.marginTop = `${res.totalWater}px `;
+                console.log(res.totalWater)
+                break;
+            default:
+                break;
+        }
+    });
+});
