@@ -147,9 +147,20 @@ button:active {
     align-items: center;
 }
 .messageDrinkWater {
+    width: 210px;
+    height: 30px;
     color: #fff;
-    font-size: 10px;
+    font-size: 15px;
+    text-align: right;
+}
+
+.messagecache {
+    height: auto;
+    text-align: left;
     flex-wrap: wrap;
+}
+.testmessage {
+width: 80px;
 }
 
 .glassofwater {
@@ -171,6 +182,10 @@ button:active {
     color: blue;
 }
 
+.goatwater {
+  width: 300px;
+  flex-wrap: wrap;
+}
 #watertbn img {
     height: 30px;
     width: 30px;
@@ -192,7 +207,7 @@ button:active {
   background-color: grey;}
   .glass{
   margin-top: 30px;
-  margin-left: 365px;
+  margin-left: 430px;
   width: 40px;
   height: 50px;
   background-color: aqua;

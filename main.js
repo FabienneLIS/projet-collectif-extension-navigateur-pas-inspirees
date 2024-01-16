@@ -147,12 +147,39 @@ const button = document.querySelector(".glassofwater");
 const waterbottle = document.querySelector(".waterBottle")
 const listenMessenger = document.querySelector(".messageCache")
 // Initialisez le compteur de clics
-let click = 1;
+let click = 0;
 let i = 45
 // Ajoutez un écouteur d'événements au clic sur le bouton
 button.addEventListener("click", event => 
 {
-    if(click >= 8 ) 
+    switch (true) {
+        case click >= 0 && click <= 7:
+            listenMessenger.textContent = "";
+            click += 1;
+            let j = 5;
+            waterbottle.style.marginTop = `${i -= j}px`;
+            break;
+        case click === 8:
+            listenMessenger.textContent = "Eau là là ! Vous avez vidé deux litres. Hydro-héros en action !";
+            click += 1;
+            let z = 5;
+            waterbottle.style.marginTop = `${i -= z}px`;
+            break;
+        case click > 8:
+            click = 0;
+            i = 45;
+            let a =5;
+            waterbottle.style.marginTop = `${i -= a}px`;
+            break;
+        default:
+            break;
+    }
+    
+    console.log(click);
+    
+})
+    
+    /*if(click >= 8 ) 
     {
         listenMessenger.textContent = "Eau là là ! Vous avez vidé deux litres. Hydro-héros en action !"
         click = 1
@@ -166,4 +193,4 @@ button.addEventListener("click", event =>
     }
 
     console.log(click)
-})
+})*/
