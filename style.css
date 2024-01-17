@@ -164,10 +164,9 @@ width: 80px;
 }
 
 .glassofwater {
-    width: 42px;
-    height: 42px;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    width: 50px;
+    height: 50px;
+    margin-top: 10px;
     cursor: pointer;
     transform: scale(1);
 }

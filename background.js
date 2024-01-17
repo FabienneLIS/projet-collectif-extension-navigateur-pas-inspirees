@@ -121,6 +121,7 @@ function stopAlarm() {
     chrome.alarms.clear("timesup");
 }
 
+// stocker le remplissage du verre d'eau
 function updateWater() {
     chrome.storage.local.get(["click", "totalWater"], (res) => {
         console.log(res.totalWater);
