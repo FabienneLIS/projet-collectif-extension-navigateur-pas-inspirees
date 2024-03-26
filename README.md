@@ -17,6 +17,12 @@ Projet collectif dans le cadre d'ADA TECH SCHOOL
 
 Création d'une extension navigateur pour faciliter la vie des utilisateurs avec une application POMODORO et un compteur d'eau
 
+## dévelloppeurs/ses
+
+![Marie Le Lamer](https://github.com/MarieLeLamer)  
+![Fabienne Lis](https://github.com/FabienneLIS)  
+![Lise Quemener](https://github.com/Lilifrontback)  
+
 ## Inspiration : 
 
 Inspiré de [documentation](https://freshman.tech/pomodoro-timer/)
@@ -24,3 +30,11 @@ Inspiré de [documentation](https://freshman.tech/pomodoro-timer/)
 ## À quoi ça ressemble
 
 ![image_du_projet](https://github.com/adatechschool/projet-collectif-extension-navigateur-pas-inspirees/blob/main/img/Capture%20d'%C3%A9cran%202024-01-17%20110506.png)
+
+## Compétences acquises
+- découverte du fonctionnement des extensions
+
+----
+----
+## Licence
+Pas de licence, c'est un projet d’étude.
