@@ -15,7 +15,8 @@ Projet collectif dans le cadre d'ADA TECH SCHOOL
 
 ## Introduction : 
 
-Création d'une extension navigateur pour faciliter la vie des utilisateurs avec une application POMODORO et un compteur d'eau
+Création d'une extension navigateur pour faciliter la vie des utilisateurs avec une application POMODORO et un compteur d'eau.  
+Le projet a duré 7 jours.
 
 ## dévelloppeurs/ses
 
